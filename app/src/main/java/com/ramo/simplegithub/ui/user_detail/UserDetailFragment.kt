@@ -1,9 +1,9 @@
 package com.ramo.simplegithub.ui.user_detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseFragment
@@ -35,6 +35,12 @@ class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserDetailVie
         binding.vm = viewModel
         binding.materialToolbar.setNavigationOnClickListener {
             viewModel.goBack()
+        }
+        binding.btnOpenBrowser.setOnClickListener {
+            viewModel.user.value?.let { user ->
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(user.profileUrl))
+                startActivity(browserIntent)
+            }
         }
     }
 }
