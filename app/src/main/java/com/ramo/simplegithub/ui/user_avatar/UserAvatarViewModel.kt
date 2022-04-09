@@ -1,4 +1,4 @@
-package com.ramo.simplegithub.ui.user_detail
+package com.ramo.simplegithub.ui.user_avatar
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class UserDetailViewModel @Inject constructor(
+class UserAvatarViewModel @Inject constructor(
     private val userDetailUseCase: UserDetailUseCase
 ) : BaseViewModel() {
 
@@ -18,13 +18,6 @@ class UserDetailViewModel @Inject constructor(
 
     fun getUserDetail(userName: String) = safeScope {
         _user.value = userDetailUseCase.invoke(userName)
-    }
-
-    fun goAvatar(userName: String, profileImageUrl: String){
-        navigate(UserDetailFragmentDirections.actionUserDetailFragmentToUserAvatarFragment(
-            userName = userName,
-            profileImage = profileImageUrl
-        ))
     }
 
 

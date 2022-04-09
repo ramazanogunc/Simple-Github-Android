@@ -32,6 +32,7 @@ class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserDetailVie
     }
 
     private fun initViews() {
+        binding.vm = viewModel
         binding.materialToolbar.setNavigationOnClickListener {
             viewModel.goBack()
         }

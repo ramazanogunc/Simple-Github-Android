@@ -6,6 +6,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseActivity
+import com.ramo.simplegithub.core.ext.gone
+import com.ramo.simplegithub.core.ext.visible
 import com.ramo.simplegithub.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,5 +25,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         val navController = navHostFragment.navController
         findViewById<BottomNavigationView>(R.id.bottom_nav)
             .setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.userAvatarFragment) {
+                binding.bottomNav.gone()
+            } else {
+                binding.bottomNav.visible()
+            }
+        }
     }
 }
