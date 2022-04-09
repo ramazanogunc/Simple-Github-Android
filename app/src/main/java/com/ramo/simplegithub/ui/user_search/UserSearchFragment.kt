@@ -12,7 +12,7 @@ import com.ramo.simplegithub.core.ext.textChangeDelayedListener
 import com.ramo.simplegithub.core.ext.visible
 import com.ramo.simplegithub.databinding.FragmentUserSearchBinding
 import com.ramo.simplegithub.domain.model.User
-import com.ramo.simplegithub.ui.common.StandardViewHolder
+import com.ramo.simplegithub.ui.common.viewholder.UserViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +40,9 @@ class UserSearchFragment : BaseFragment<FragmentUserSearchBinding, UserSearchVie
             viewModel.nextPage()
         }
         binding.recyclerView.render { parent: ViewGroup, _: Int, _: User ->
-            return@render StandardViewHolder<User>(viewGroup = parent, R.layout.item_user)
+            return@render UserViewHolder(viewGroup = parent, onClickFavorite = { user ->
+                viewModel.changeFavoriteStatus(user)
+            })
         }
         binding.editTextSearch.textChangeDelayedListener { query ->
             binding.recyclerView.clearData()

@@ -1,11 +1,11 @@
-package com.ramo.simplegithub.ui.common
+package com.ramo.simplegithub.ui.common.viewholder
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.ramo.sweetrecycler.BR
 import com.ramo.sweetrecycler.DBSweetViewHolder
 
-class StandardViewHolder<T>(
+open class StandardViewHolder<T>(
     viewGroup: ViewGroup,
     @LayoutRes layoutId: Int
 ) : DBSweetViewHolder<T>(layoutId, viewGroup) {

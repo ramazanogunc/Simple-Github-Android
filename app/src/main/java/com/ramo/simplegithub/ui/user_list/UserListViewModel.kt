@@ -36,4 +36,8 @@ class UserListViewModel @Inject constructor(
         page = 1
         getUsers()
     }
+
+    fun changeFavoriteStatus(user: User) {
+        // TODO:
+    }
 }

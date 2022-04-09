@@ -1,15 +1,15 @@
 package com.ramo.simplegithub.ui.user_list
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.AppConstants.PER_PAGE
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseFragment
 import com.ramo.simplegithub.core.ext.observe
 import com.ramo.simplegithub.databinding.FragmentUserListBinding
 import com.ramo.simplegithub.domain.model.User
-import com.ramo.simplegithub.ui.common.StandardViewHolder
+import com.ramo.simplegithub.ui.common.viewholder.UserViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +17,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
     R.layout.fragment_user_list
 ) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         binding.swipeToRefresh.setOnRefreshListener {
@@ -43,7 +44,9 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
 
     private fun initRecyclerView() {
         binding.recyclerView.render { parent: ViewGroup, _: Int, _: User ->
-            return@render StandardViewHolder<User>(viewGroup = parent, R.layout.item_user)
+            return@render UserViewHolder(viewGroup = parent, onClickFavorite = { user ->
+                viewModel.changeFavoriteStatus(user)
+            })
         }
         binding.recyclerView.setOnItemClickListener<User> { _, _, data ->
             // TODO: go to detail page 

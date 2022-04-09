@@ -33,4 +33,8 @@ class UserSearchViewModel @Inject constructor(
         page++
         _users.value = searchUserListUseCase.invoke(query, page, AppConstants.PER_PAGE)
     }
+
+    fun changeFavoriteStatus(user: User) {
+        // TODO:
+    }
 }

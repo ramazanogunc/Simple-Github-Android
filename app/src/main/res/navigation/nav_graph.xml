@@ -11,5 +11,9 @@
     <fragment
         android:id="@+id/fragmentUserList"
         android:name="com.ramo.simplegithub.ui.user_list.UserListFragment"
-        android:label="UserListFragment" />
+        android:label="UserListFragment" >
+        <action
+            android:id="@+id/action_fragmentUserList_to_fragmentUserSearch"
+            app:destination="@id/fragmentUserSearch" />
+    </fragment>
 </navigation>
