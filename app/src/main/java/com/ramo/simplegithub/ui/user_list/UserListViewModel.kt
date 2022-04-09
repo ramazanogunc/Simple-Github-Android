@@ -40,4 +40,12 @@ class UserListViewModel @Inject constructor(
     fun changeFavoriteStatus(user: User) {
         // TODO:
     }
+
+    fun goUserDetail(userName: String) {
+        navigate(
+            UserListFragmentDirections.actionFragmentUserListToUserDetailFragment(
+                userName = userName
+            )
+        )
+    }
 }

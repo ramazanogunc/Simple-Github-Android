@@ -13,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.core.ext.findGenericWithType
 import com.ramo.simplegithub.core.ext.observe
 import com.ramo.simplegithub.core.ext.safeContext
 import com.ramo.simplegithub.core.state.DialogEvent
+import com.ramo.simplegithub.core.state.NavEvent
 import com.ramo.simplegithub.customview.LoadingDialog
 
 abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
@@ -62,6 +64,12 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
             else if (dialogEvent is DialogEvent.Error)
                 showError(dialogEvent.throwable, dialogEvent.cancelable)
 
+        }
+        observe(viewModel.navigationEvent) { navEvent ->
+            when (navEvent) {
+                NavEvent.GoBack -> findNavController().popBackStack()
+                is NavEvent.Navigate -> findNavController().navigate(navEvent.navDirections)
+            }
         }
     }
 

@@ -34,6 +34,14 @@ class UserSearchViewModel @Inject constructor(
         _users.value = searchUserListUseCase.invoke(query, page, AppConstants.PER_PAGE)
     }
 
+    fun goUserDetail(userName: String) {
+        navigate(
+            UserSearchFragmentDirections.actionFragmentUserSearchToUserDetailFragment(
+                userName = userName
+            )
+        )
+    }
+
     fun changeFavoriteStatus(user: User) {
         // TODO:
     }

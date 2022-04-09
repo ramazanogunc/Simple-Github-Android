@@ -50,10 +50,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
             })
         }
         binding.recyclerView.setOnItemClickListener<User> { _, _, data ->
-            val action = UserListFragmentDirections.actionFragmentUserListToUserDetailFragment(
-                userName = data.userName
-            )
-            findNavController().navigate(action)
+            viewModel.goUserDetail(data.userName)
         }
         binding.recyclerView.onScrollEnd {
             viewModel.getUserNextPage()

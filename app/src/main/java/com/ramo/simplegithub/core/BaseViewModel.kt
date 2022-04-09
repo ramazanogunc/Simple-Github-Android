@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import com.ramo.simplegithub.core.state.DialogEvent
+import com.ramo.simplegithub.core.state.NavEvent
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
@@ -15,6 +17,8 @@ abstract class BaseViewModel : ViewModel() {
 
     private val _dialogEvent = MutableLiveData<DialogEvent>()
     val dialogEvent: LiveData<DialogEvent> = _dialogEvent
+
+    val navigationEvent = SingleLiveEvent<NavEvent>()
 
 
     protected fun showLoading() {
@@ -37,8 +41,12 @@ abstract class BaseViewModel : ViewModel() {
         _dialogEvent.value = DialogEvent.None
     }
 
-    protected fun goRoute() {
-        // TODO: Burasına bakılacak
+    fun navigate(navDirections: NavDirections) {
+        navigationEvent.value = NavEvent.Navigate(navDirections)
+    }
+
+    fun goBack() {
+        navigationEvent.value = NavEvent.GoBack
     }
 
     protected fun safeScope(

@@ -33,8 +33,7 @@ class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserDetailVie
 
     private fun initViews() {
         binding.materialToolbar.setNavigationOnClickListener {
-            Toast.makeText(context, "girdi", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
+            viewModel.goBack()
         }
     }
 }
