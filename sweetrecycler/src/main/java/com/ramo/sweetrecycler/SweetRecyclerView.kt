@@ -51,7 +51,7 @@ class SweetRecyclerView @JvmOverloads constructor(
     fun <T> addData(list: List<T>) {
         val adapter = (adapter as? SweetAdapter<T>) ?: return
         val oldList = adapter.currentList.toMutableList()
-        oldList.addAll(list)
+        oldList.addAll(oldList.size, list)
         adapter.submitList(oldList.toList())
     }
 
