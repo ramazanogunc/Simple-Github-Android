@@ -10,10 +10,14 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun getUserList(page: Int, perPage: Int): List<User> {
-        return githubService.getUserList(page, perPage)
+        return githubService.getUserList(page, perPage).toUserList()
     }
 
     override suspend fun searchUserList(query: String, page: Int, perPage: Int): List<User> {
-        return githubService.searchUserList(query, page, perPage)
+        return githubService.searchUserList(query, page, perPage).toUserList()
+    }
+
+    override suspend fun getUserDetail(userName: String): User {
+        return githubService.getUserDetail(userName).toUser()
     }
 }

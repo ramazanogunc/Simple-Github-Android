@@ -3,6 +3,7 @@ package com.ramo.simplegithub.ui.user_search
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.AppConstants
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseFragment
@@ -13,6 +14,7 @@ import com.ramo.simplegithub.core.ext.visible
 import com.ramo.simplegithub.databinding.FragmentUserSearchBinding
 import com.ramo.simplegithub.domain.model.User
 import com.ramo.simplegithub.ui.common.viewholder.UserViewHolder
+import com.ramo.simplegithub.ui.user_list.UserListFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,17 +38,25 @@ class UserSearchFragment : BaseFragment<FragmentUserSearchBinding, UserSearchVie
     }
 
     private fun initViews() {
-        binding.recyclerView.onScrollEnd {
-            viewModel.nextPage()
-        }
-        binding.recyclerView.render { parent: ViewGroup, _: Int, _: User ->
-            return@render UserViewHolder(viewGroup = parent, onClickFavorite = { user ->
-                viewModel.changeFavoriteStatus(user)
-            })
-        }
-        binding.editTextSearch.textChangeDelayedListener { query ->
-            binding.recyclerView.clearData()
-            viewModel.search(query)
+        withVB {
+            recyclerView.onScrollEnd {
+                viewModel.nextPage()
+            }
+            recyclerView.render { parent: ViewGroup, _: Int, _: User ->
+                return@render UserViewHolder(viewGroup = parent, onClickFavorite = { user ->
+                    viewModel.changeFavoriteStatus(user)
+                })
+            }
+            recyclerView.setOnItemClickListener<User> { _, _, data ->
+                val action = UserSearchFragmentDirections.actionFragmentUserSearchToUserDetailFragment(
+                    userName = data.userName
+                )
+                findNavController().navigate(action)
+            }
+            editTextSearch.textChangeDelayedListener { query ->
+                binding.recyclerView.clearData()
+                viewModel.search(query)
+            }
         }
     }
 }

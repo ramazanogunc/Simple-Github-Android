@@ -7,13 +7,36 @@
     <fragment
         android:id="@+id/fragmentUserSearch"
         android:name="com.ramo.simplegithub.ui.user_search.UserSearchFragment"
-        android:label="UserSearchFragment" />
+        android:label="UserSearchFragment" >
+        <action
+            android:id="@+id/action_fragmentUserSearch_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" >
+            <argument
+                android:name="userName"
+                app:argType="string"
+                android:defaultValue=""/>
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/fragmentUserList"
         android:name="com.ramo.simplegithub.ui.user_list.UserListFragment"
         android:label="UserListFragment" >
+
         <action
-            android:id="@+id/action_fragmentUserList_to_fragmentUserSearch"
-            app:destination="@id/fragmentUserSearch" />
+            android:id="@+id/action_fragmentUserList_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" >
+            <argument
+                android:name="userName"
+                app:argType="string"
+                android:defaultValue=""/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.ramo.simplegithub.ui.user_detail.UserDetailFragment"
+        android:label="UserDetailFragment" >
+        <argument
+            android:name="userName"
+            app:argType="string" />
     </fragment>
 </navigation>

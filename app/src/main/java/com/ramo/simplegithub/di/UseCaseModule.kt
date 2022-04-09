@@ -2,6 +2,7 @@ package com.ramo.simplegithub.di
 
 import com.ramo.simplegithub.domain.repository.UserRepository
 import com.ramo.simplegithub.domain.usecase.SearchUserListUseCase
+import com.ramo.simplegithub.domain.usecase.UserDetailUseCase
 import com.ramo.simplegithub.domain.usecase.UserListUseCase
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,10 @@ object UseCaseModule {
     @Provides
     fun providesSearchUserListUseCase(userRepository: UserRepository): SearchUserListUseCase =
         SearchUserListUseCase(userRepository)
+
+    @Singleton
+    @Provides
+    fun providesUserDetailUseCase(userRepository: UserRepository): UserDetailUseCase =
+        UserDetailUseCase(userRepository)
 
 }

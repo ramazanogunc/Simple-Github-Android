@@ -15,8 +15,8 @@ object NetworkClient {
 
     val client = HttpClient(CIO) {
         install(Logging) {
-            logger = Logger.ANDROID
-            level = LogLevel.ALL
+            logger = Logger.DEFAULT
+            level = LogLevel.BODY
         }
         install(ContentNegotiation) {
             gson()

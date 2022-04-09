@@ -1,7 +1,8 @@
 package com.ramo.simplegithub.ui.user_list
 
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.AppConstants.PER_PAGE
 import com.ramo.simplegithub.R
@@ -49,7 +50,10 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
             })
         }
         binding.recyclerView.setOnItemClickListener<User> { _, _, data ->
-            // TODO: go to detail page 
+            val action = UserListFragmentDirections.actionFragmentUserListToUserDetailFragment(
+                userName = data.userName
+            )
+            findNavController().navigate(action)
         }
         binding.recyclerView.onScrollEnd {
             viewModel.getUserNextPage()

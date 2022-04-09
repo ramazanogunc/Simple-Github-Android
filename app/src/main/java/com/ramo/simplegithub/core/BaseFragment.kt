@@ -3,7 +3,6 @@ package com.ramo.simplegithub.core
 import android.R
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +38,7 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         initViewModel()
         initCommonObserver()
         initObserver()
@@ -70,7 +70,8 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
             .setTitle("Error")
             .setMessage(throwable.toString()) // Specifying a listener allows you to take an action before dismissing the dialog.
             // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton(R.string.yes
+            .setPositiveButton(
+                R.string.yes
             ) { dialog, which -> }
             .setNegativeButton(R.string.no, null)
             .setIcon(R.drawable.ic_dialog_alert)
