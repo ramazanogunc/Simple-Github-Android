@@ -1,12 +1,10 @@
 package com.ramo.simplegithub.data.remote
 
-import android.util.Log
 import com.ramo.simplegithub.data.remote.model.UserListRequest
 import com.ramo.simplegithub.data.remote.model.response.UserListResponse
 import com.ramo.simplegithub.domain.model.User
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import javax.inject.Inject
 
 class GithubService @Inject constructor(
@@ -22,13 +20,25 @@ class GithubService @Inject constructor(
             page = page,
             perPage = perPage
         )
-        val response = networkClient.client.get("https://api.github.com/$SEARCH_USER") {
+        val response = networkClient.client.get(SEARCH_USER) {
             parameter("q", req.query)
             parameter("page", req.page.toString())
             parameter("per_page", req.perPage.toString())
         }.body<UserListResponse>()
-        //Log.d("TAG", "getUserList: "+response.toString())
         return response.toUserList()
-        //return listOf()
+    }
+
+
+    suspend fun searchUserList(query: String, page: Int, perPage: Int): List<User> {
+        val req = UserListRequest(
+            page = page,
+            perPage = perPage
+        )
+        val response = networkClient.client.get(SEARCH_USER) {
+            parameter("q", query)
+            parameter("page", req.page.toString())
+            parameter("per_page", req.perPage.toString())
+        }.body<UserListResponse>()
+        return response.toUserList()
     }
 }

@@ -23,7 +23,8 @@ object NetworkClient {
         }
 
         defaultRequest {
-            headersOf("application","vnd.github.v3+json")
+            url(BASE_URL)
+            headersOf("application", "vnd.github.v3+json")
         }
 
     }

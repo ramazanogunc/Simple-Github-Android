@@ -7,9 +7,13 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val githubService: GithubService
-): UserRepository {
+) : UserRepository {
 
     override suspend fun getUserList(page: Int, perPage: Int): List<User> {
-        return githubService.getUserList(page,perPage)
+        return githubService.getUserList(page, perPage)
+    }
+
+    override suspend fun searchUserList(query: String, page: Int, perPage: Int): List<User> {
+        return githubService.searchUserList(query, page, perPage)
     }
 }

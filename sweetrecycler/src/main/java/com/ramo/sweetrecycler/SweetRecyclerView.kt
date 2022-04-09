@@ -57,7 +57,7 @@ class SweetRecyclerView @JvmOverloads constructor(
 
     fun clearData() {
         val adapter = (adapter as? SweetAdapter<*>) ?: return
-        adapter.submitList(null)
+        adapter.submitList(listOf())
     }
 
     @Suppress("UNCHECKED_CAST")
