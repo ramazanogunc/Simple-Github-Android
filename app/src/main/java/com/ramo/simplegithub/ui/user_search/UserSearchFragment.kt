@@ -33,6 +33,9 @@ class UserSearchFragment : BaseFragment<FragmentUserSearchBinding, UserSearchVie
             binding.recyclerView.addData(users)
             binding.recyclerView.isPaginationEnable = users.size >= AppConstants.PER_PAGE
         }
+        observe(viewModel.listUpdated){
+            binding.recyclerView.notifyDataSetChanged()
+        }
     }
 
     private fun initViews() {

@@ -21,4 +21,7 @@ interface UserResponseDao : BaseDao<UserResponse> {
 
     @Query("SELECT * FROM user_response LIMIT ((:page-1)*:perPage), :perPage")
     suspend fun getListByPaging(page: Int, perPage: Int): List<UserResponse>
+
+    @Query("SELECT * FROM user_response WHERE login  LIKE '%' || :query || '%'  LIMIT ((:page-1)*:perPage), :perPage")
+    suspend fun searchListByPaging(query: String, page: Int, perPage: Int): List<UserResponse>
 }

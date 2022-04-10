@@ -43,7 +43,6 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
             binding.recyclerView.isPaginationEnable = users.size >= PER_PAGE
         }
         observe(viewModel.listUpdated){
-            Toast.makeText(context, "tetik", Toast.LENGTH_SHORT).show()
             binding.recyclerView.notifyDataSetChanged()
         }
     }

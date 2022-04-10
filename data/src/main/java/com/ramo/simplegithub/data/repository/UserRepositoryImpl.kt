@@ -31,7 +31,7 @@ class UserRepositoryImpl @Inject constructor(
         if (isOnlyCache) throw RefreshException()
         val response = githubService.searchUserList(query, page, perPage)
         saveUserListCache(response.items)
-        return githubService.searchUserList(query, page, perPage).toUserList()
+        return userResponseDao.searchListByPaging(query, page, perPage).map { it.toUser() }
     }
 
     override suspend fun getUserDetail(userName: String): User {
