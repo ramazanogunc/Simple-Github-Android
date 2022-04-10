@@ -27,7 +27,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchUserList(query: String, page: Int, perPage: Int): List<User> {
-        if (isOnlyCache) throw RefreshException()
+        if (isOnlyCache) return cacheDatabase.userResponseDao.searchListByPaging(
+            query,
+            page,
+            perPage
+        ).map { it.toUser() }
         val response = githubService.searchUserList(query, page, perPage)
         saveUserListCache(response.items)
         return cacheDatabase.userResponseDao.searchListByPaging(query, page, perPage)
@@ -35,6 +39,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(userName: String): User {
+        val local = cacheDatabase.userDetailResponseDao.getByUsername(userName)
+        if (isOnlyCache && local == null) throw RefreshException()
+        if (isOnlyCache) return local!!.toUser()
         val response = githubService.getUserDetail(userName)
         saveUserDetailCache(response)
         return cacheDatabase.userDetailResponseDao.get(response.id ?: 0).toUser()

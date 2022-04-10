@@ -16,4 +16,8 @@ interface UserDetailResponseDao : BaseDao<UserDetailResponse> {
     @Query("SELECT * FROM user_detail_response WHERE id=:id")
     suspend fun get(id: Int): UserDetailResponse
 
+    @Query("SELECT * FROM user_detail_response WHERE login=:userName")
+    suspend fun getByUsername(userName: String): UserDetailResponse?
+
+
 }
