@@ -3,9 +3,11 @@ package com.ramo.simplegithub.data.remote.model.response
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.database.IgnoreExtraProperties
 import com.google.gson.annotations.SerializedName
 import com.ramo.simplegithub.domain.model.User
 
+@IgnoreExtraProperties
 @Entity(tableName = "user_response")
 data class UserResponse(
     @SerializedName("login")

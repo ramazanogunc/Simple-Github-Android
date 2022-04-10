@@ -4,6 +4,7 @@ import com.ramo.simplegithub.data.NetworkUtil
 import com.ramo.simplegithub.data.local.CacheDatabase
 import com.ramo.simplegithub.data.local.model.FavoriteUser
 import com.ramo.simplegithub.data.remote.GithubService
+import com.ramo.simplegithub.data.remote.firebase.FirebaseCache
 import com.ramo.simplegithub.data.remote.model.response.UserDetailResponse
 import com.ramo.simplegithub.data.remote.model.response.UserResponse
 import com.ramo.simplegithub.domain.exception.RefreshException
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val githubService: GithubService,
     private val cacheDatabase: CacheDatabase,
+    private val firebaseCache: FirebaseCache,
     networkUtil: NetworkUtil
 ) : BaseRepository(networkUtil), UserRepository {
 
@@ -55,6 +57,7 @@ class UserRepositoryImpl @Inject constructor(
             cacheDatabase.favoriteUserDao.delete(FavoriteUser(user.id))
         cacheDatabase.userResponseDao.changeFavoriteStatus(user.id, isFavorite)
         cacheDatabase.userDetailResponseDao.changeFavoriteStatus(user.id, isFavorite)
+        firebaseCache.changeFavoriteStatus(user.id, isFavorite)
     }
 
     private suspend fun saveUserListCache(items: List<UserResponse>) {
@@ -63,6 +66,11 @@ class UserRepositoryImpl @Inject constructor(
         userResponseDao.insertAll(items)
         val favoriteUsersIds = cacheDatabase.favoriteUserDao.getAll().map { it.id }
         userResponseDao.changeFavoriteStatus(favoriteUsersIds, true)
+        items.map { item ->
+            val isFav = favoriteUsersIds.any { favId -> item.id == favId }
+            item.isFavorite = isFav
+        }
+        firebaseCache.saveUserList(items)
     }
 
     private suspend fun saveUserDetailCache(userDetail: UserDetailResponse) {
@@ -70,7 +78,9 @@ class UserRepositoryImpl @Inject constructor(
         userDetailResponseDao.insert(userDetail)
         val favoriteUsersIds = cacheDatabase.favoriteUserDao.getAll().map { it.id }
         val isFavorite = favoriteUsersIds.any { it == userDetail.id }
+        userDetail.isFavorite = isFavorite
         if (isFavorite)
             userDetailResponseDao.changeFavoriteStatus(userDetail.id ?: 0, true)
+        firebaseCache.saveUserDetail(userDetail)
     }
 }
