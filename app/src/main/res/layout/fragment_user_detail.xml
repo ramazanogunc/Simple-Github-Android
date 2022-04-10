@@ -117,8 +117,8 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/txtFollowing"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.824"
+                    app:layout_constraintEnd_toStartOf="@id/imgFavorite"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@id/titleFollower"
                     app:layout_constraintTop_toBottomOf="@id/txtUserName"
                     app:layout_constraintVertical_bias="1.0" />
@@ -136,6 +136,19 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/titleFollowing"
                     app:layout_constraintStart_toStartOf="@id/titleFollowing" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgFavorite"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:adjustViewBounds="true"
+                    android:src="@{item.favorite ? @drawable/ic_favorite : @drawable/ic_favorite_round}"
+                    android:onClick="@{(v)-> vm.changeFavoriteStatus(item)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtFollowing"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/titleFollowing"
+                    app:layout_constraintVertical_bias="0.0" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

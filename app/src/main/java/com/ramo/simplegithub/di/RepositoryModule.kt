@@ -1,6 +1,7 @@
 package com.ramo.simplegithub.di
 
 import com.ramo.simplegithub.data.NetworkUtil
+import com.ramo.simplegithub.data.local.CacheDatabase
 import com.ramo.simplegithub.data.local.dao.FavoriteUserDao
 import com.ramo.simplegithub.data.local.dao.UserResponseDao
 import com.ramo.simplegithub.data.remote.GithubService
@@ -20,14 +21,12 @@ object RepositoryModule {
     @Provides
     fun providesUserRepository(
         githubService: GithubService,
-        userResponseDao: UserResponseDao,
-        favoriteUserDao: FavoriteUserDao,
+        cacheDatabase: CacheDatabase,
         networkUtil: NetworkUtil
     ): UserRepository = UserRepositoryImpl(
         githubService,
-        userResponseDao,
-        favoriteUserDao,
-        networkUtil,
+        cacheDatabase,
+        networkUtil
     )
 
 }

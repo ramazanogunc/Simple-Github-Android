@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ramo.simplegithub.core.BaseViewModel
 import com.ramo.simplegithub.domain.model.User
+import com.ramo.simplegithub.domain.usecase.UserChangeFavoriteStatusUseCase
 import com.ramo.simplegithub.domain.usecase.UserDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
-    private val userDetailUseCase: UserDetailUseCase
+    private val userDetailUseCase: UserDetailUseCase,
+    private val userChangeFavoriteStatusUseCase: UserChangeFavoriteStatusUseCase
 ) : BaseViewModel() {
 
     private val _user = MutableLiveData<User>()
@@ -20,15 +22,18 @@ class UserDetailViewModel @Inject constructor(
         _user.value = userDetailUseCase.invoke(userName)
     }
 
-    fun goAvatar(userName: String, profileImageUrl: String){
-        navigate(UserDetailFragmentDirections.actionUserDetailFragmentToUserAvatarFragment(
-            userName = userName,
-            profileImage = profileImageUrl
-        ))
+    fun goAvatar(userName: String, profileImageUrl: String) {
+        navigate(
+            UserDetailFragmentDirections.actionUserDetailFragmentToUserAvatarFragment(
+                userName = userName,
+                profileImage = profileImageUrl
+            )
+        )
     }
 
 
-    fun changeFavoriteStatus(user: User) {
-        // TODO:
+    fun changeFavoriteStatus(user: User) = safeScope {
+        userChangeFavoriteStatusUseCase.invoke(user, user.isFavorite?.not() ?: true)
+        _user.value = user
     }
 }
