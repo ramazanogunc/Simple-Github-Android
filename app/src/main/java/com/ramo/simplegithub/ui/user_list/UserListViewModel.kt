@@ -4,18 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ramo.simplegithub.AppConstants
 import com.ramo.simplegithub.core.BaseViewModel
+import com.ramo.simplegithub.core.SingleLiveEvent
 import com.ramo.simplegithub.domain.model.User
+import com.ramo.simplegithub.domain.usecase.UserChangeFavoriteStatusUseCase
 import com.ramo.simplegithub.domain.usecase.UserListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class UserListViewModel @Inject constructor(
-    private val userListUseCase: UserListUseCase
+    private val userListUseCase: UserListUseCase,
+    private val userChangeFavoriteStatusUseCase: UserChangeFavoriteStatusUseCase
 ) : BaseViewModel() {
 
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> = _users
+
+    val listUpdated = SingleLiveEvent<Boolean>()
 
     private var page = 1
 
@@ -37,8 +42,9 @@ class UserListViewModel @Inject constructor(
         getUsers()
     }
 
-    fun changeFavoriteStatus(user: User) {
-        // TODO:
+    fun changeFavoriteStatus(user: User) = safeScope {
+        userChangeFavoriteStatusUseCase.invoke(user, user.isFavorite?.not() ?: true)
+        listUpdated.value = true
     }
 
     fun goUserDetail(userName: String) {

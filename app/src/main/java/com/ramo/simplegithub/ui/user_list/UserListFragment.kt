@@ -3,6 +3,7 @@ package com.ramo.simplegithub.ui.user_list
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.AppConstants.PER_PAGE
 import com.ramo.simplegithub.R
@@ -40,6 +41,10 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
         observe(viewModel.users) { users ->
             binding.recyclerView.addData(users)
             binding.recyclerView.isPaginationEnable = users.size >= PER_PAGE
+        }
+        observe(viewModel.listUpdated){
+            Toast.makeText(context, "tetik", Toast.LENGTH_SHORT).show()
+            binding.recyclerView.notifyDataSetChanged()
         }
     }
 

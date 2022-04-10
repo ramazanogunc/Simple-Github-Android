@@ -3,6 +3,7 @@ package com.ramo.simplegithub.data.repository
 import com.ramo.simplegithub.data.NetworkUtil
 import com.ramo.simplegithub.data.local.dao.FavoriteUserDao
 import com.ramo.simplegithub.data.local.dao.UserResponseDao
+import com.ramo.simplegithub.data.local.model.FavoriteUser
 import com.ramo.simplegithub.data.remote.GithubService
 import com.ramo.simplegithub.data.remote.model.response.UserResponse
 import com.ramo.simplegithub.domain.exception.RefreshException
@@ -35,6 +36,16 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserDetail(userName: String): User {
         return githubService.getUserDetail(userName).toUser()
+    }
+
+    override suspend fun changeFavoriteStatus(user: User, isFavorite: Boolean) {
+        user.isFavorite = isFavorite
+        if (isFavorite)
+            favoriteUserDao.insert(FavoriteUser(user.id))
+        else
+            favoriteUserDao.delete(FavoriteUser(user.id))
+        userResponseDao.changeFavoriteStatus(user.id, isFavorite)
+        // TODO: Change user detail cache
     }
 
     private suspend fun saveUserListCache(items: List<UserResponse>) {

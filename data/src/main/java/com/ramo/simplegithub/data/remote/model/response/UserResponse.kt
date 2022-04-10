@@ -24,7 +24,7 @@ data class UserResponse(
     var isFavorite: Boolean = false
 ) {
     fun toUser(): User = User(
-        id = id?.toLong() ?: 0L,
+        id = id ?: 0,
         userName = login ?: "",
         profileUrl = htmlUrl ?: "",
         profilePictureUrl = avatarUrl ?: "",

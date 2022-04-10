@@ -38,7 +38,7 @@ data class UserDetailResponse(
     @SerializedName("updated_at") var updatedAt: String? = null
 ) {
     fun toUser(): User = User(
-        id = id?.toLong() ?: 0L,
+        id = id ?: 0,
         userName = login ?: "",
         profileUrl = htmlUrl ?: "",
         profilePictureUrl = avatarUrl ?: "",
