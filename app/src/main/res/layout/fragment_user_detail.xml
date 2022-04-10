@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.ramo.simplegithub.ui.user_detail.UserDetailViewModel" />
+            type="com.ramo.simplegithub.ui.UserViewModel" />
 
         <variable
             name="item"

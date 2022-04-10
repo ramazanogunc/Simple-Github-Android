@@ -4,19 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseFragment
 import com.ramo.simplegithub.core.ext.observe
 import com.ramo.simplegithub.databinding.FragmentUserDetailBinding
+import com.ramo.simplegithub.ui.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserDetailViewModel>(
+class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserViewModel>(
     R.layout.fragment_user_detail
 ) {
-
+    override fun isSharedViewModel() = true
     private val args: UserDetailFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,7 +28,6 @@ class UserDetailFragment : BaseFragment<FragmentUserDetailBinding, UserDetailVie
 
     override fun initObserver() {
         observe(viewModel.user) { user ->
-            Toast.makeText(context, "new user" + user.toString(), Toast.LENGTH_SHORT).show()
             binding.item = user
         }
     }

@@ -1,5 +1,6 @@
 package com.ramo.simplegithub.data.remote
 
+import android.util.Log
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -15,8 +16,12 @@ object NetworkClient {
 
     val client = HttpClient(CIO) {
         install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.BODY
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Log.d("KTOR", message)
+                }
+            }
+            level = LogLevel.ALL
         }
         install(ContentNegotiation) {
             gson()

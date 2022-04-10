@@ -3,21 +3,24 @@ package com.ramo.simplegithub.ui.user_list
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.ramo.simplegithub.AppConstants.PER_PAGE
 import com.ramo.simplegithub.R
 import com.ramo.simplegithub.core.BaseFragment
 import com.ramo.simplegithub.core.ext.observe
 import com.ramo.simplegithub.databinding.FragmentUserListBinding
 import com.ramo.simplegithub.domain.model.User
+import com.ramo.simplegithub.ui.UserViewModel
 import com.ramo.simplegithub.ui.common.viewholder.UserViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel>(
+class UserListFragment : BaseFragment<FragmentUserListBinding, UserViewModel>(
     R.layout.fragment_user_list
 ) {
+
+    override fun isSharedViewModel() = true
+    var firstOpen = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
@@ -25,6 +28,10 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
         binding.swipeToRefresh.setOnRefreshListener {
             binding.recyclerView.clearData()
             viewModel.refreshUsers()
+        }
+        if (firstOpen){
+            viewModel.getUsers()
+            firstOpen = false
         }
     }
 
@@ -35,7 +42,6 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
     override fun dismissLoading() {
         binding.swipeToRefresh.isRefreshing = false
     }
-
 
     override fun initObserver() {
         observe(viewModel.users) { users ->
@@ -54,7 +60,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
             })
         }
         binding.recyclerView.setOnItemClickListener<User> { _, _, data ->
-            viewModel.goUserDetail(data.userName)
+            viewModel.goUserDetailFromList(data.userName)
         }
         binding.recyclerView.onScrollEnd {
             viewModel.getUserNextPage()

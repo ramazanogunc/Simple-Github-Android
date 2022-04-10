@@ -30,7 +30,7 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
 
     protected lateinit var viewModel: VM
 
-    open var isSharedViewModel: Boolean = false
+    open fun isSharedViewModel(): Boolean = false
 
     private var loadingDialog: Dialog? = null
 
@@ -98,6 +98,7 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
 
     }
 
+
     protected open fun showLoading() {
         loadingDialog?.show()
     }
@@ -109,7 +110,7 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
     private fun initViewModel() {
         val vmClass = javaClass.findGenericWithType<VM>(1)
         viewModel = ViewModelProvider(
-            if (isSharedViewModel) requireActivity() else this
+            if (isSharedViewModel()) requireActivity() else this
         )[vmClass]
     }
 
