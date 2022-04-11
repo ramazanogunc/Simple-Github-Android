@@ -1,7 +1,5 @@
 package com.ramo.simplegithub.core
 
-import android.R
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +12,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ramo.simplegithub.core.ext.findGenericWithType
 import com.ramo.simplegithub.core.ext.observe
 import com.ramo.simplegithub.core.ext.safeContext
@@ -74,16 +73,11 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
     }
 
     protected open fun showError(throwable: Throwable, cancelable: Boolean) {
-        AlertDialog.Builder(context)
-            .setTitle("Error")
-            .setMessage(throwable.toString()) // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton(
-                R.string.yes
-            ) { dialog, which -> }
-            .setNegativeButton(R.string.no, null)
-            .setIcon(R.drawable.ic_dialog_alert)
-            .show()
+        if (isAdded && view != null)
+            Snackbar.make(
+                requireView(),
+                throwable.localizedMessage?: "Something went worng", Snackbar.LENGTH_LONG
+            ).show();
     }
 
     protected open fun showAlert(messageResId: Int, cancelable: Boolean) {
